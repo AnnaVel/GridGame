@@ -1,0 +1,13 @@
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\bin\x86\Debug\TrainingProject.exe.config
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\bin\x86\Debug\TrainingProject.exe
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\bin\x86\Debug\TrainingProject.pdb
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\GridGame.csprojResolveAssemblyReference.cache
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\MainWindow.baml
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\MainWindow.g.cs
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\App.g.cs
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\TrainingProject_MarkupCompile.cache
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\TrainingProject.g.resources
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\TrainingProject.Properties.Resources.resources
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\GridGame.csproj.GenerateResource.Cache
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\TrainingProject.exe
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Debug\TrainingProject.pdb

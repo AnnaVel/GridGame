@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TrainingProject
 {
@@ -20,14 +10,13 @@ namespace TrainingProject
     /// </summary>
     public partial class MainWindow : Window
     {
-        const int gameSideSize = 3;
+        const int GameSideSize = 4;
 
         public MainWindow()
         {
             InitializeComponent();
             Buttons_are_arranged += Ending;
         }
-
 
         private void RandomizeAndEnableButtons(object sender, RoutedEventArgs e)
         {
@@ -38,27 +27,91 @@ namespace TrainingProject
         private void RandomizeButtons()
         {
             Random rand = new Random();
-            List<Point> allSlots = new List<Point>() 
-            { 
-                new Point(0,0),
-                new Point(0,1),
-                new Point(0,2),
-                new Point(1,0),
-                new Point(1,1),
-                new Point(1,2),
-                new Point(2,0),
-                new Point(2,1),
-            };
+            const int NecessarySwaps = 100;
 
-            foreach (Button button in MainGrid.Children)
+            int emptySlotRow = GameSideSize - 1;
+            int emptySlotCol = GameSideSize - 1;
+            int randomHorizontalMove;
+            int randomVerticalMove;
+            int swapsMade = 0;
+
+            while (swapsMade < NecessarySwaps)
             {
-                int currentRandomPointIndex = rand.Next(0, allSlots.Count);
-                Point currentPoint = allSlots[currentRandomPointIndex];
-                allSlots.Remove(currentPoint);
-                button.SetValue(Grid.RowProperty, (int)currentPoint.X);
-                button.SetValue(Grid.ColumnProperty, (int)currentPoint.Y);
+                randomHorizontalMove = rand.Next(-1, 2);
+                randomVerticalMove = rand.Next(-1, 2);
+
+                if (IsMovePossible(emptySlotRow, emptySlotCol, randomHorizontalMove, randomVerticalMove))
+                {
+                    Button currentButton = GetButtonFromGridPosition(emptySlotRow + randomVerticalMove, emptySlotCol + randomHorizontalMove);
+
+                    currentButton.SetValue(Grid.RowProperty, emptySlotRow);
+                    currentButton.SetValue(Grid.ColumnProperty, emptySlotCol);
+
+                    emptySlotCol += randomHorizontalMove;
+                    emptySlotRow += randomVerticalMove;
+
+                    swapsMade++;
+                }
+            }
+        }
+
+        //private Tuple<int, int> GetEmptySlotCoordinates()
+        //{
+
+        //    for (int i = 0; i < GameSideSize; i++)
+        //    {
+        //        for (int u = 0; u < GameSideSize; u++)
+        //        {
+                    
+        //        }
+        //    }
+        //}
+
+        private Button GetButtonFromGridPosition(int row, int col)
+        {
+            UIElementCollection allButtons = MainGrid.Children;
+
+            foreach (Button button in allButtons)
+            {
+                int buttonRow = (int)button.GetValue(Grid.RowProperty);
+                int buttonCol = (int)button.GetValue(Grid.ColumnProperty);
+
+                if (buttonRow == row && buttonCol == col)
+                {
+                    return button;
+                }
             }
 
+            return null;
+        }
+
+        private bool IsMovePossible(int emptySlotRow, int emptySlotCol, int horizontalMove, int verticalMove)
+        {
+            // If both moves are 0, the move is not possible, because a button will not be found
+            // at this part of the Grid.
+            if (horizontalMove == 0 && verticalMove == 0)
+            {
+                return false;
+            }
+
+            // The button cannot move diagonally also.
+            if ((horizontalMove == -1 && verticalMove == -1) ||
+                (horizontalMove == 1 && verticalMove == 1))
+            {
+                return false;
+            }
+
+            if (emptySlotCol + horizontalMove < 0 ||
+                emptySlotCol + horizontalMove >= GameSideSize ||
+                emptySlotRow + verticalMove < 0 ||
+                emptySlotRow + verticalMove >= GameSideSize)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         private void EnableAllNumberButtons()
@@ -71,7 +124,7 @@ namespace TrainingProject
 
         private void On_every_Button_Click(object sender, RoutedEventArgs e)
         {
-            bool[,] allSlots = new bool[gameSideSize, gameSideSize];
+            bool[,] allSlots = new bool[GameSideSize, GameSideSize];
 
             UIElementCollection allButtons = MainGrid.Children;
             foreach (Button button in allButtons)
@@ -123,18 +176,25 @@ namespace TrainingProject
             if (((int)One.GetValue(Grid.RowProperty) == 0 && (int)One.GetValue(Grid.ColumnProperty) == 0) &&
                 ((int)Two.GetValue(Grid.RowProperty) == 0 && (int)Two.GetValue(Grid.ColumnProperty) == 1) &&
                 ((int)Three.GetValue(Grid.RowProperty) == 0 && (int)Three.GetValue(Grid.ColumnProperty) == 2) &&
-                ((int)Four.GetValue(Grid.RowProperty) == 1 && (int)Four.GetValue(Grid.ColumnProperty) == 0) &&
-                ((int)Five.GetValue(Grid.RowProperty) == 1 && (int)Five.GetValue(Grid.ColumnProperty) == 1) &&
-                ((int)Six.GetValue(Grid.RowProperty) == 1 && (int)Six.GetValue(Grid.ColumnProperty) == 2) &&
-                ((int)Seven.GetValue(Grid.RowProperty) == 2 && (int)Seven.GetValue(Grid.ColumnProperty) == 0) &&
-                ((int)Eight.GetValue(Grid.RowProperty) == 2 && (int)Eight.GetValue(Grid.ColumnProperty) == 1))
+                ((int)Four.GetValue(Grid.RowProperty) == 0 && (int)Four.GetValue(Grid.ColumnProperty) == 3) &&
+                ((int)Five.GetValue(Grid.RowProperty) == 1 && (int)Five.GetValue(Grid.ColumnProperty) == 0) &&
+                ((int)Six.GetValue(Grid.RowProperty) == 1 && (int)Six.GetValue(Grid.ColumnProperty) == 1) &&
+                ((int)Seven.GetValue(Grid.RowProperty) == 1 && (int)Seven.GetValue(Grid.ColumnProperty) == 2) &&
+                ((int)Eight.GetValue(Grid.RowProperty) == 1 && (int)Eight.GetValue(Grid.ColumnProperty) == 3) &&
+                ((int)Nine.GetValue(Grid.RowProperty) == 2 && (int)Nine.GetValue(Grid.ColumnProperty) == 0) &&
+                ((int)Ten.GetValue(Grid.RowProperty) == 2 && (int)Ten.GetValue(Grid.ColumnProperty) == 1) &&
+                ((int)Eleven.GetValue(Grid.RowProperty) == 2 && (int)Eleven.GetValue(Grid.ColumnProperty) == 2) &&
+                ((int)Twelve.GetValue(Grid.RowProperty) == 2 && (int)Twelve.GetValue(Grid.ColumnProperty) == 3) &&
+                ((int)Thirteen.GetValue(Grid.RowProperty) == 3 && (int)Thirteen.GetValue(Grid.ColumnProperty) == 0) &&
+                ((int)Fourteen.GetValue(Grid.RowProperty) == 3 && (int)Fourteen.GetValue(Grid.ColumnProperty) == 1) &&
+                ((int)Fifteen.GetValue(Grid.RowProperty) == 3 && (int)Fifteen.GetValue(Grid.ColumnProperty) == 2))
             {
                 Buttons_are_arranged(this, new EventArgs());
             }
         }
 
         EventHandler Buttons_are_arranged;
-        
+
         private void Ending(object sender, EventArgs e)
         {
             foreach (Button button in MainGrid.Children)
@@ -144,20 +204,12 @@ namespace TrainingProject
 
             Randomize.IsEnabled = false;
 
-            Button startOver = new Button();
-            startOver.SetValue(Grid.ColumnProperty, 2);
-            startOver.SetValue(Grid.RowProperty, 2);
-            startOver.Width = 100;
-            startOver.Height = 30;
-            startOver.Content = "Start over?";
-            startOver.Click += On_start_over;
-
-            MainGrid.Children.Add(startOver);
+            StartOver.Visibility = Visibility.Visible;
         }
 
         private void On_start_over(object sender, RoutedEventArgs e)
         {
-            MainGrid.Children.Remove(sender as Button);
+            StartOver.Visibility = Visibility.Collapsed;
             Randomize.IsEnabled = true;
         }
     }

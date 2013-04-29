@@ -27,10 +27,12 @@ namespace TrainingProject
         private void RandomizeButtons()
         {
             Random rand = new Random();
-            const int NecessarySwaps = 100;
+            const int NecessarySwaps = 200;
 
-            int emptySlotRow = GameSideSize - 1;
-            int emptySlotCol = GameSideSize - 1;
+            Tuple<int, int> emptySlot = GetEmptySlotCoordinates();
+
+            int emptySlotRow = emptySlot.Item1;
+            int emptySlotCol = emptySlot.Item2;
             int randomHorizontalMove;
             int randomVerticalMove;
             int swapsMade = 0;
@@ -38,7 +40,16 @@ namespace TrainingProject
             while (swapsMade < NecessarySwaps)
             {
                 randomHorizontalMove = rand.Next(-1, 2);
-                randomVerticalMove = rand.Next(-1, 2);
+
+                // This is to assure we will not get any diagonal moves.
+                if (randomHorizontalMove == 0)
+                {
+                    randomVerticalMove = rand.Next(-1, 2);
+                }
+                else
+                {
+                    randomVerticalMove = 0;
+                }
 
                 if (IsMovePossible(emptySlotRow, emptySlotCol, randomHorizontalMove, randomVerticalMove))
                 {
@@ -55,17 +66,33 @@ namespace TrainingProject
             }
         }
 
-        //private Tuple<int, int> GetEmptySlotCoordinates()
-        //{
+        private Tuple<int, int> GetEmptySlotCoordinates()
+        {
+            bool[,] gameMap = new bool[GameSideSize, GameSideSize];
 
-        //    for (int i = 0; i < GameSideSize; i++)
-        //    {
-        //        for (int u = 0; u < GameSideSize; u++)
-        //        {
-                    
-        //        }
-        //    }
-        //}
+            UIElementCollection allButtons = MainGrid.Children;
+
+            foreach (Button button in allButtons)
+            {
+                int row = (int)button.GetValue(Grid.RowProperty);
+                int col = (int)button.GetValue(Grid.ColumnProperty);
+
+                gameMap[row, col] = true;
+            }
+
+            for (int i = 0; i < GameSideSize; i++)
+            {
+                for (int u = 0; u < GameSideSize; u++)
+                {
+                    if (!gameMap[i, u])
+                    {
+                        return new Tuple<int, int>(i, u);
+                    }
+                }
+            }
+
+            return null;
+        }
 
         private Button GetButtonFromGridPosition(int row, int col)
         {
@@ -94,13 +121,7 @@ namespace TrainingProject
                 return false;
             }
 
-            // The button cannot move diagonally also.
-            if ((horizontalMove == -1 && verticalMove == -1) ||
-                (horizontalMove == 1 && verticalMove == 1))
-            {
-                return false;
-            }
-
+            // We assure the move will not bring us outside of the grid.
             if (emptySlotCol + horizontalMove < 0 ||
                 emptySlotCol + horizontalMove >= GameSideSize ||
                 emptySlotRow + verticalMove < 0 ||
@@ -205,11 +226,13 @@ namespace TrainingProject
             Randomize.IsEnabled = false;
 
             StartOver.Visibility = Visibility.Visible;
+            Yes.Visibility = Visibility.Visible;
         }
 
         private void On_start_over(object sender, RoutedEventArgs e)
         {
             StartOver.Visibility = Visibility.Collapsed;
+            Yes.Visibility = Visibility.Collapsed;
             Randomize.IsEnabled = true;
         }
     }

@@ -10,3 +10,4 @@ C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x
 C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Release\GridGame.csproj.GenerateResource.Cache
 C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Release\TrainingProject.exe
 C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Release\TrainingProject.pdb
+C:\Users\Anna\Projects\Telerik Academy\CSharp\WPF\GridGame\TrainingProject\obj\x86\Release\GridGame.csprojResolveAssemblyReference.cache
